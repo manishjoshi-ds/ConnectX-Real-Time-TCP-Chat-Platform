@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multi-Client Chat Application Using TCP</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header class="topbar">
+    <a href="/" class="brand">TCPChat</a>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#architecture">How It Works</a>
+      <a href="#networking">TCP Concepts</a>
+      <a href="/chat">Open Chat</a>
+    </nav>
+    <div class="topbar-actions">
+      <button id="themeToggle" class="btn-icon" type="button" aria-label="Toggle theme">Theme</button>
+      <a href="/chat" class="btn-primary">Start Chatting</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>Multi-Client Chat Application Using TCP</h1>
+        <p class="lead">
+          A real-time client-server chat system built with Flask and Flask-SocketIO over WebSocket/TCP,
+          supporting simultaneous users, public broadcasts, and confidential 1-to-1 private messaging.
+        </p>
+        <div class="hero-actions">
+          <a href="/chat" class="btn-primary">Start Chatting</a>
+          <a href="#networking" class="btn-secondary">Explore TCP Concepts</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h2>Session Architecture</h2>
+        <p>Every browser tab establishes a persistent TCP-backed WebSocket stream to the central Flask-SocketIO server.</p>
+        <dl class="spec-list">
+          <div><dt>Transport</dt><dd>WebSocket over TCP</dd></div>
+          <div><dt>Backend</dt><dd>Python Flask-SocketIO + Simple-WebSocket</dd></div>
+          <div><dt>Concurrency</dt><dd>Thread-synchronized user table</dd></div>
+          <div><dt>Security</dt><dd>Server validation + text-only DOM rendering</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2>Core Capabilities</h2>
+      <div class="grid-3">
+        <article class="card">
+          <h3>01. Concurrent Multi-Client Room</h3>
+          <p>Multiple clients such as Rahul, Aman, and Priya connect simultaneously and broadcast instant messages to the shared room.</p>
+        </article>
+        <article class="card">
+          <h3>02. Private 1-to-1 Routing</h3>
+          <p>Select any online user from the sidebar to route encrypted-channel private messages directly via their socket session ID.</p>
+        </article>
+        <article class="card">
+          <h3>03. Duplicate & Empty Guards</h3>
+          <p>Server-side validation rejects blank messages, malformed names, and duplicate active usernames before state mutation.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="architecture" class="section">
+      <h2>How It Works</h2>
+      <div class="grid-4">
+        <article class="card">
+          <h3>1. TCP Handshake</h3>
+          <p>The browser initiates a reliable 3-way TCP handshake (SYN, SYN-ACK, ACK) with the server port.</p>
+        </article>
+        <article class="card">
+          <h3>2. WebSocket Upgrade</h3>
+          <p>An HTTP Upgrade request transitions the socket into a persistent full-duplex WebSocket frame stream.</p>
+        </article>
+        <article class="card">
+          <h3>3. Client Registration</h3>
+          <p>Joining sends a <code>join_chat</code> event; the server registers the username and socket ID under a thread lock.</p>
+        </article>
+        <article class="card">
+          <h3>4. Real-Time Dispatch</h3>
+          <p>Public messages broadcast to all clients; private messages emit strictly to the recipient socket ID.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="networking" class="section">
+      <h2>Computer Networks Summary</h2>
+      <div class="card">
+        <p>
+          <strong>Socket.IO over TCP vs Raw Python Sockets:</strong> A raw Python <code>socket</code> server binds directly to OS TCP streams using <code>SOCK_STREAM</code> and requires custom message framing. Web browsers cannot open raw TCP sockets directly due to security sandboxing, so Flask-SocketIO upgrades HTTP over TCP into WebSocket connections, preserving TCP's reliable, ordered byte-stream delivery while adding event multiplexing and heartbeat disconnection detection.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Multi-Client Chat Application Using TCP · B.Tech Computer Networks Project</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

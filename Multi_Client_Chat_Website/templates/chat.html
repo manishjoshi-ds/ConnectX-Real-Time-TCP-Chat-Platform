@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TCPChat Studio · Multi-Client Chat Application Using TCP</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script src="https://cdn.socket.io/4.8.1/socket.io.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a href="/" class="brand">TCPChat</a>
+    <nav class="nav-links">
+      <a href="/">Overview</a>
+      <a href="/chat" class="active">Chat Studio</a>
+    </nav>
+    <div class="topbar-actions">
+      <button id="themeToggle" class="btn-icon" type="button" aria-label="Toggle theme">Dark Mode</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Login View -->
+    <section id="loginView" class="login-wrapper">
+      <div class="card login-card glass">
+        <h1>Join TCPChat Studio</h1>
+        <p>Enter a unique username to open a persistent WebSocket-over-TCP session.</p>
+        <form id="joinForm" novalidate>
+          <label for="usernameInput">Username</label>
+          <input
+            id="usernameInput"
+            type="text"
+            placeholder="e.g. Rahul, Aman, or Priya"
+            maxlength="24"
+            autocomplete="off"
+            required
+          />
+          <p id="loginError" class="error-text" hidden></p>
+          <button type="submit" class="btn-primary full-width">Join Chat</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Chat Dashboard View -->
+    <section id="chatView" class="dashboard glass" hidden>
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="brand-sm">TCPChat Studio</div>
+          <div id="connectionStatus" class="status-text">Connected · WebSocket/TCP</div>
+        </div>
+
+        <div class="current-user">
+          <span class="meta-label">Signed in as</span>
+          <strong id="currentUsername">-</strong>
+        </div>
+
+        <div class="users-header">
+          <span>Channels & Groups</span>
+          <button id="newGroupBtn" type="button" class="btn-mini">+ Group</button>
+        </div>
+        <ul id="channelsList" class="users-list"></ul>
+
+        <div class="users-header">
+          <span>Users & DMs</span>
+          <span id="onlineCount" class="mono-count">0</span>
+        </div>
+        <ul id="usersList" class="users-list"></ul>
+
+        <button id="logoutBtn" type="button" class="btn-secondary full-width">Logout</button>
+      </aside>
+
+      <section class="chat-main">
+        <header class="chat-header">
+          <div>
+            <h2 id="roomHeading">Common Chat Room</h2>
+            <p id="roomSubheading" class="meta-sub">Public broadcast to all connected clients</p>
+          </div>
+          <div class="header-tools">
+            <input id="searchInput" type="search" placeholder="Search messages..." class="search-mini" />
+          </div>
+        </header>
+
+        <div id="messagesContainer" class="messages-list" aria-live="polite"></div>
+
+        <div id="replyBar" class="reply-bar" hidden>
+          <span id="replyLabel"></span>
+          <button id="cancelReplyBtn" type="button" class="btn-mini">Cancel</button>
+        </div>
+
+        <div id="uploadBar" class="upload-bar" hidden>
+          <span id="uploadLabel">Uploading...</span>
+          <progress id="uploadProgress" value="0" max="100"></progress>
+        </div>
+
+        <form id="messageForm" class="message-form" novalidate>
+          <input id="fileInput" type="file" hidden />
+          <button id="attachBtn" type="button" class="btn-secondary" title="Attach Photo, Video, Document, or Audio">Attach</button>
+          <input
+            id="messageInput"
+            type="text"
+            placeholder="Write a message (Enter to send)..."
+            maxlength="2000"
+            autocomplete="off"
+          />
+          <button type="submit" class="btn-primary">Send</button>
+        </form>
+        <p id="chatError" class="error-text" hidden></p>
+      </section>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

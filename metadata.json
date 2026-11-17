@@ -1,0 +1,6 @@
+{
+  "name": "Multi-Client Chat Application Using TCP",
+  "description": "Real-time multi-client chat application demonstrating TCP communication, client-server architecture, public rooms, private messaging, and computer networks documentation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

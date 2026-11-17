@@ -1,0 +1,12 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+data/
+uploads/
+Multi_Client_Chat_Website/data/
+Multi_Client_Chat_Website/uploads/
