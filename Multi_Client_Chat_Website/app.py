@@ -18,6 +18,7 @@ import uuid
 from flask import Flask, Response, abort, jsonify, render_template, request, send_file
 from flask_socketio import SocketIO, emit
 from werkzeug.utils import secure_filename
+from flask_cors import CORS
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -31,10 +32,17 @@ os.makedirs(MEDIA_DIR, exist_ok=True)
 os.makedirs(AVATARS_DIR, exist_ok=True)
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "tcp-chat-dev-secret-key"
-app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024  # 50 MB ceiling
 
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
+CORS(app, origins=[
+    "https://connect-x-real-time-tcp-chat-platfo.vercel.app/"
+])
+
+socketio = SocketIO(
+    app,
+    cors_allowed_origins=[
+        "https://connect-x-real-time-tcp-chat-platfo.vercel.app/"
+    ]
+)
 
 state_lock = threading.Lock()
 active_sessions = {}  # sid -> {sid, user_id, username, normalized, auth_token, joined_at}
